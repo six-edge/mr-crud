@@ -1,6 +1,6 @@
-Simple App that uses the GitHub API to CRUD files. Based on Node.js, Express, Vue.js and Vuetify
-=======
 # Mr. CRUD 😎
+
+Simple App that uses the GitHub API to CRUD files. Based on Node.js, Express, Vue.js and Vuetify
 
 ## Project setup
 ```

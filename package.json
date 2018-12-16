@@ -1,6 +1,8 @@
 {
   "name": "mr-crud",
   "version": "0.1.0",
+  "homepage": "https://mr-crud.herokuapp.com/",
+  "description": "Simple App that uses the GitHub API to CRUD files. Based on Node.js, Express, Vue.js and Vuetify",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -8,6 +10,8 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "dotenv": "^6.2.0",
+    "express-session": "^1.15.6",
     "passport": "^0.4.0",
     "passport-github": "^1.1.0",
     "vue": "^2.5.17",

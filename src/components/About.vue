@@ -4,7 +4,7 @@
       
       <v-flex> 
         
-        <img alt="Vue logo" src="../assets/logo.png">
+        <div class="emoji">{{ emoji }}</div>
         <div>{{ msg }}</div>
       
       </v-flex>
@@ -15,7 +15,8 @@
 <script>
   export default {
     props: {
-      msg: String
+      msg: String,
+      emoji: String
     },
     data: () => ({
       debug: true
@@ -24,5 +25,7 @@
 </script>
 
 <style>
-
+.emoji {
+  font-size: 10rem
+}
 </style>

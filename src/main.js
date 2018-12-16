@@ -19,6 +19,19 @@ Vue.use(Vuetify, {
   }
 })
 
+const getHeader = function(name, defaultValue) {
+  return name + defaultValue
+}
+
+// Get user headers when logged in
+const user = {
+  displayName: getHeader('x-user-display-name', ''),
+  username: getHeader('x-user-username', ''),
+  profileUrl: getHeader('x-user-profile-url', ''),
+  avatarUrl: getHeader('x-user-avatar-url', ''),
+  roles: getHeader('x-user-roles', [])
+}
+
 new Vue({
   router,
   store,

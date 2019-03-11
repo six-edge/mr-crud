@@ -10,11 +10,11 @@ module.exports = {
         app.get('/', (req, res) => {
             
             // Greeting
-            let greeting = `<pre style="font-size: 5rem">Hello Mr. Server 🤪</pre>`
+            let body = `<pre style="font-size: 5rem">Hello Mr. Server 🤪</pre>`
 
             // Only send user headers if authenticated
             if (req.user) {
-                greeting += `<pre>${dumpJson(req.user)}</pre>`
+                body += `<pre>${dumpJson(req.user)}</pre>`
 
                 res.setHeader('x-user-display-name', req.user.displayName)
                 res.setHeader('x-user-username', req.user.username)
@@ -22,7 +22,7 @@ module.exports = {
                 res.setHeader('x-user-avatar-url', req.user.avatarUrl)
                 res.setHeader('x-user-roles', req.user.roles)
             }
-            res.send(greeting)
+            res.send(body)
         })
 
         // Session Test Page

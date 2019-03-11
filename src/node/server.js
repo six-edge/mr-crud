@@ -13,7 +13,7 @@ const sessionStore      = require('connect-redis')(session)
 const sessionOptions    = require("./session")(sessionStore)
 const protocol          = process.env.PROTOCOL = process.env.PROTOCOL || 'http'
 const host              = process.env.HOST = process.env.HOST || 'localhost'
-const port              = process.env.SERVER_PORT = process.env.SERVER_PORT || 7000
+const port              = process.env.SERVER_PORT = process.env.SERVER_PORT || 5000
 
 // Passport using github strategy
 const passport = require('passport')

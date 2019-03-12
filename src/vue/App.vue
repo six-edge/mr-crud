@@ -17,7 +17,7 @@
       <v-toolbar-title><span class="font-weight-light"> Mr. CRUD 😎</span></v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
-        <v-btn v-if="!loggedIn" flat @click="goto('login')">Login</v-btn>
+        <v-btn v-if="!loggedIn" flat @click="goto('debug')">Debug</v-btn>
       </v-toolbar-items>
     </v-toolbar>
     <v-content>
@@ -42,15 +42,13 @@
 <script>
 import menu from './menu'
 
-const USER = {}
-
 export default {
   name: 'App',
   data: () => ({
     drawer: true,
     loggedIn: false,
     menu: menu,
-    user: {}
+    debug: process.env.NODE_ENV !== 'prod' || false
   }),
   methods: {
     log(msg) {
@@ -58,6 +56,9 @@ export default {
       console.log(msg)
     },
     goto(routeName, params) {
+      if (routeName.charAt(0) === '/') {
+        location.href=routeName
+      }
       this.$router.push({ name: routeName, params: params ? params : {}})
     }
   },

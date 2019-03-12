@@ -3,14 +3,14 @@
 // Load .env file
 require('dotenv').config()
 
-// Express
 const express           = require('express')
 const app               = express()
 const router            = require('./router')
 const github            = require('./strategies/github')
+const redis             = require('redis').createClient({ url: process.env.REDIS_URL })
 const session           = require("express-session")
 const sessionStore      = require('connect-redis')(session)
-const sessionOptions    = require("./session")(sessionStore)
+const sessionOptions    = require("./session")(redis, sessionStore)
 const protocol          = process.env.PROTOCOL = process.env.PROTOCOL || 'http'
 const host              = process.env.HOST = process.env.HOST || 'localhost'
 const port              = process.env.SERVER_PORT = process.env.SERVER_PORT || 5000

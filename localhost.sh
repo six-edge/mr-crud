@@ -2,4 +2,4 @@
 
 echo Launching Node.js Server 🚀
 
-node src/node/server.js
+nodemon src/node/server.js

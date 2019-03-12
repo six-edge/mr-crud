@@ -1,16 +1,16 @@
 "use strict"
 
-module.exports = RedisStore => {
+module.exports = (RedisClient, RedisStore) => {
 
-    // Redis client options
-    const redisOptions = {
-        url: process.env.REDIS_URL,
+    // Redis store options
+    const redisStoreOptions = {
+        client: RedisClient,
         logErrors: true,
     }
 
     // Session options
     return {
-        store: new RedisStore(redisOptions),
+        store: new RedisStore(redisStoreOptions),
         secret: 'crudinthemudtakingathud', 
         saveUninitialized: true,
         rolling: true,

@@ -6,7 +6,7 @@
 
 <script>
 // @ is an alias to /src
-import About from '@/components/About.vue'
+import About from '@/vue/components/About.vue'
 
 export default {
   name: 'home',

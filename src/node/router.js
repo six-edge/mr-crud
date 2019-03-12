@@ -47,14 +47,17 @@ module.exports = {
         app.get('/session', (req, res, next) => {
             if (req.session.views) {
                 req.session.views++
-                res.setHeader('Content-Type', 'text/html')
-                res.write('<p>views: ' + req.session.views + '</p>')
-                res.write('<p>expires in: ' + (req.session.cookie.maxAge / 1000) + 's</p>')
-                res.end()
             } else {
                 req.session.views = 1
-                res.end('<p>Welcome to the session demo. Refresh!</p>')
             }
+            res.setHeader('Content-Type', 'application/json')
+            res.send(`{ "views": ${req.session.views}, "expires": ${(req.session.cookie.maxAge / 1000)} }`)
         })
+
+        // Logout
+        app.get('/auth/logout', function(req, res){
+            req.logout();
+            res.redirect('/');
+        });
     }
 }

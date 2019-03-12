@@ -17,7 +17,7 @@
       <v-toolbar-title><span class="font-weight-light"> Mr. CRUD 😎</span></v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
-        <v-btn v-if="!loggedIn" flat @click="goto('debug')">Debug</v-btn>
+        <v-btn v-if="debug" flat @click="goto('debug')">Debug</v-btn>
       </v-toolbar-items>
     </v-toolbar>
     <v-content>
@@ -48,7 +48,7 @@ export default {
     drawer: true,
     loggedIn: false,
     menu: menu,
-    debug: process.env.NODE_ENV !== 'prod' || false
+    debug: process.env.NODE_ENV !== 'production' || false
   }),
   methods: {
     log(msg) {

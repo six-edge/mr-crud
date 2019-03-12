@@ -38,7 +38,6 @@ const applyRoles = user => {
     return user
 }
 
-
 // On successful authentication
 const onSuccess = (accessToken, refreshToken, profile, done) => {
     
@@ -65,7 +64,7 @@ module.exports = {
             '/auth/github/callback', 
             passport.authenticate('github', { failureRedirect: '/login' }), 
             (req, res) => {
-                // Successful authentication, redirect home.
+                // Successful authentication. Redirect to home page.
                 res.redirect('/');
             }
         )

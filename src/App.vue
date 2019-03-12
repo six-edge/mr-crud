@@ -42,12 +42,15 @@
 <script>
 import menu from './menu'
 
+const USER = {}
+
 export default {
   name: 'App',
   data: () => ({
     drawer: true,
     loggedIn: false,
-    menu: menu
+    menu: menu,
+    user: {}
   }),
   methods: {
     log(msg) {
@@ -57,7 +60,13 @@ export default {
     goto(routeName, params) {
       this.$router.push({ name: routeName, params: params ? params : {}})
     }
+  },
+  beforeCreate: () => {
+    // Parse JSON user data from the DOM and store it in the sessionStorage
+    const element = document.getElementById('node')
+    if (element && element.innerText !== '{}') {
+      sessionStorage.setItem('user', element.innerText || {})
+    }
   }
 }
-
 </script>

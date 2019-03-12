@@ -1,28 +1,46 @@
 "use strict"
 
+const fs = require('fs');
+
 // const bodyParser        = require('body-parser')
 // const jsonParser        = bodyParser.json()
 
 module.exports = {
     use: (app) => {
-    
-        // Home
+
+        // SPA
         app.get('/', (req, res) => {
             
-            // Greeting
-            let body = `<pre style="font-size: 5rem">Hello Mr. Server 🤪</pre>`
+            fs.readFile('./dist/index.html', (error, data) => {
+                
+                if (error) throw error
 
+                const payload = JSON.stringify(req.user || {})
+                const html = `<script type="application/json" id="node">${payload}</script>`
+                const el = '<div id=app></div>'
+
+                res.end(data.toString().replace(el, el + html))
+            });
+        })
+
+        // Mr. Server
+        app.get('/test', (req, res) => {
+            res.send(`<pre style="font-size: 5rem">Hello Mr. Server 🤪</pre>`)
+        })
+
+        // User Profile
+        app.get('/profile', (req, res) => {
+            
             // Only send user headers if authenticated
             if (req.user) {
-                body += `<pre>${dumpJson(req.user)}</pre>`
-
                 res.setHeader('x-user-display-name', req.user.displayName)
                 res.setHeader('x-user-username', req.user.username)
                 res.setHeader('x-user-profile-url', req.user.profileUrl)
                 res.setHeader('x-user-avatar-url', req.user.avatarUrl)
                 res.setHeader('x-user-roles', req.user.roles)
             }
-            res.send(body)
+            res.setHeader('Content-Type', 'application/json')
+            res.send(JSON.stringify(req.user || {}))
         })
 
         // Session Test Page
@@ -39,9 +57,4 @@ module.exports = {
             }
         })
     }
-}
-
-// Dump prettified object
-const dumpJson = function (object) {
-    return JSON.stringify(object, null, '\t')
 }

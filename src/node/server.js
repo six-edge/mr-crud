@@ -18,9 +18,6 @@ const port              = process.env.SERVER_PORT = process.env.SERVER_PORT || 5
 // Passport using github strategy
 const passport = require('passport')
 
-// Server dist folder as root /
-app.use(express.static('dist'))
-
 // Initialize session
 app.use(session(sessionOptions))
 app.use(passport.initialize())
@@ -29,8 +26,11 @@ app.use(passport.session())
 // Add new strategy to the passport
 passport.use(github.strategy(app, passport))
 
-// Router
+// Router has priority over static files
 router.use(app)
+
+// Server dist folder as static root
+app.use(express.static('dist'))
 
 // Listen for incoming requests
 app.listen(port, () => {

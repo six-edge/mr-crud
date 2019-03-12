@@ -5,7 +5,7 @@
       <v-flex> 
         
         <div v-if="user">
-          <img :src="user.avatarUrl" id="avatar">
+          <img id="avatar" :src="user.avatarUrl">
           <p>Hello {{ user.displayName }}</p>
         </div>
 
@@ -36,7 +36,7 @@
 .emoji {
   font-size: 10rem
 }
-.avatar{
+#avatar {
   width: 6rem
 }
 </style>

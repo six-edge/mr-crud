@@ -66,6 +66,8 @@ export default {
     const element = document.getElementById('node')
     if (element && element.innerText !== '{}') {
       sessionStorage.setItem('user', element.innerText || {})
+    } else {
+      sessionStorage.removeItem('user')
     }
   }
 }

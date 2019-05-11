@@ -1,6 +1,6 @@
 <template>
   <div class="home"> 
-    <About msg="I'm Mr. CRUD" emoji="😎" />
+    <About msg="Hello we're the CRUD Family!" emoji="😎👧👱‍♀️" />
   </div>
 </template>
 

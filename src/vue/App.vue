@@ -22,13 +22,9 @@
     </v-toolbar>
     <v-content>
       <v-container fluid fill-height>
-        <v-layout justify-center align-center>
-          <v-flex shrink>
 
-            <router-view/> <!-- Router Target -->
-           
-          </v-flex>
-        </v-layout>
+        <router-view/> <!-- Router Target -->
+        
       </v-container>
     </v-content>
     <v-footer app fixed>

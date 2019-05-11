@@ -8,18 +8,22 @@ const fs = require('fs');
 module.exports = {
     use: (app) => {
 
-        // SPA
+        // SPA route that injects node server data into the response
         app.get('/', (req, res) => {
             
+            // Preventing caching due to user data in the DOM
+            res.set('Cache-Control', 'no-cache, no-store, must-revalidate')
+
+            // Serve the 
             fs.readFile('./dist/index.html', (error, data) => {
                 
                 if (error) throw error
 
                 const payload = JSON.stringify(req.user || {})
                 const html = `<script type="application/json" id="node">${payload}</script>`
-                const el = '<div id=app></div>'
+                const el = '<script data-node></script>'
 
-                res.end(data.toString().replace(el, el + html))
+                res.end(data.toString().replace(el, html))
             });
         })
 

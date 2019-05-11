@@ -6,7 +6,10 @@ const strategy = require('passport-github').Strategy
 const passportStrategyOptions = {
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: `${process.env.PROTOCOL}://${process.env.HOST}:${process.env.SERVER_PORT}${process.env.GITHUB_CALLBACK_URL}` 
+    callbackURL: `${process.env.PROTOCOL}://${process.env.HOST}:${process.env.SERVER_PORT}${process.env.GITHUB_CALLBACK_URL}`,
+    //authorizationURL: "https://ENTERPRISE_INSTANCE_URL/login/oauth/authorize",
+    //tokenURL: "https://ENTERPRISE_INSTANCE_URL/login/oauth/access_token",
+    //userProfileURL: "https://ENTERPRISE_INSTANCE_URL/api/v3/user",
 }
 
 // Gets only relevant user data
@@ -62,7 +65,7 @@ module.exports = {
         // Path to handle the authentication callback
         app.get(
             '/auth/github/callback', 
-            passport.authenticate('github', { failureRedirect: '/login' }), 
+            passport.authenticate('github', { failureRedirect: '/' }), 
             (req, res) => {
                 // Successful authentication. Redirect to home page.
                 res.redirect('/');

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify'
+import VueWebsocket from 'vue-native-websocket'
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -17,6 +18,13 @@ Vue.use(Vuetify, {
     info: "#607D8B",
     success: "#33691E"
   }
+})
+
+Vue.use(VueWebsocket, 'ws://localhost:5050', {
+  store: store,
+  reconnection: true,
+  // connectManually: true,
+  // format: 'json'
 })
 
 new Vue({

@@ -5,6 +5,11 @@ export default [
         route: "home"
     },
     {
+        label: "WebSocket",
+        icon: "import_export",
+        route: "websocket"
+    },
+    {
         label: "Redis Store",
         icon: "layers",
         route: "redis"

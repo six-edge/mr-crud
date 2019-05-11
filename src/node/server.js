@@ -5,12 +5,18 @@ require('dotenv').config()
 
 const express           = require('express')
 const app               = express()
+const ip                = require('ip')
+const chalk             = require('chalk');
 const router            = require('./router')
 const github            = require('./strategies/github')
-const redis             = require('redis').createClient({ url: process.env.REDIS_URL })
-const session           = require("express-session")
+const broker            = require('./broker')
+const redis             = require('redis')
+const redisSession      = redis.createClient({ url: process.env.REDIS_URL })
+const redisPub          = redis.createClient({ url: process.env.REDIS_URL })
+const redisSub          = redis.createClient({ url: process.env.REDIS_URL })
+const session           = require('express-session')
 const sessionStore      = require('connect-redis')(session)
-const sessionOptions    = require("./session")(redis, sessionStore)
+const sessionOptions    = require('./session')(redisSession, sessionStore)
 const websocket         = require('ws');
 const protocol          = process.env.PROTOCOL = process.env.PROTOCOL || 'http'
 const host              = process.env.HOST = process.env.HOST || 'localhost'
@@ -39,17 +45,63 @@ app.use(express.static('dist'))
 // Listen for incoming requests
 app.listen(port, () => {
     const info = debug ? `in ${env} mode!` : ''
-    console.info(`Server started at ${protocol}://${host}:${port} ${info}`)
+    console.info(chalk.magenta(`🚀  Server started at ${protocol}://${host}:${port} ${info}`))
 })
 
-// Start WebSocket Server
-const wss = new websocket.Server({ port: wsPort });
+// Create WebSocket Server
+const wss = new websocket.Server({ port: wsPort })
 
-wss.on('connection', function connection(ws) {
-  ws.on('message', function incoming(message) {
-    console.log(`received: ${message}`);
-    ws.send(`echo: ${message}`);
-  });
+// Broadcast Method
+wss.broadcast = function broadcast(data) {
+    wss.clients.forEach(function each(client) {
+        if (client.readyState === websocket.OPEN) {
+            client.send(data)
+        }
+    });
+};
 
-  ws.send('Hello!');
+// Start Listening for WebSocket Connections
+wss.on('connection', function connection(ws, req) {
+    
+    // Get IP from header
+    const header = req.headers['x-forwarded-for'] || ''
+    const ipAddress = header.split(/\s*,\s*/)[0];
+
+    // Get client ip and port
+    const client = ipAddress || req.connection.remoteAddress + ":" + req.connection.remotePort
+    
+    ws.on('message', function incoming(message) {
+
+        // todo: implement message broker
+        if (message.substr(0, 9) === 'broadcast') {
+            const payload = message.substr(10)
+            wss.broadcast(payload)
+            console.log(chalk.blue(`WS${client} broadcast: ${payload}`))
+        } else {
+            ws.send(`echo: ${message}`)
+            console.log(chalk.blue(`WS${client} received: ${message}`))
+        }
+    })
+
+    // Redis Pattern Subscribe to worker-*
+    redisSub.on("psubscribe", function (channel, count) {
+        console.log(chalk.red(`REDIS${client} redis subscribed to channel "${channel}" with ${count} listeners`))
+    })
+    
+    // Redis on message receive
+    redisSub.on("pmessage", function (pattern, channel, message) {
+        console.log(chalk.red(`REDIS${client} redis received message on with pattern "${pattern}" on channel "${channel}" with message "${message}"`))
+        ws.send(message)
+    })
+    
+    // Execute Command
+    redisSub.psubscribe("worker-*")
+
+    // Send message to WebSocket client
+    ws.send(`Connected to ${ip.address()} on port ${req.connection.remotePort}`)
+
+    // Confirmation
+    console.log(chalk.blue(`WS${client} connected`))
 });
+
+

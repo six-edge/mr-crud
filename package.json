@@ -12,10 +12,12 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "chalk": "^2.4.2",
     "connect-redis": "^3.4.0",
     "dotenv": "^6.2.0",
     "express-session": "^1.15.6",
     "global": "^4.3.2",
+    "ip": "^1.1.5",
     "nodemon": "^1.18.10",
     "passport": "^0.4.0",
     "passport-github": "^1.1.0",

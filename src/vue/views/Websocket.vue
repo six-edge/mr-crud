@@ -5,27 +5,37 @@
                 <v-card class="elevation-12 padding-top">
 
                     <v-text-field
-                        @keyup.enter="sendMsg"
+                        @keyup.enter="sendMessage"
                         v-model="outgoingMessage"
                         label="Message"
                     ></v-text-field>
 
                     <v-layout justify-space-between>
-                        <v-btn color="info" @click="sendMsg">Send</v-btn>
-                        <v-btn color="success" v-if="$store.state.socket.isConnected" :disabled="true">Connected</v-btn>
-                        <v-btn color="error" v-else :disabled="true">Disconnected</v-btn>
+                        <v-btn color="info" @click="sendMessage">Send</v-btn>
+                        <v-btn 
+                            v-if="isConnected" 
+                            color="success" 
+                            small
+                            flat 
+                        >Connected</v-btn>  
+                        <v-btn 
+                            v-else 
+                            color="error" 
+                            small
+                            flat
+                        >Disconnected</v-btn>
                     </v-layout>
 
                 </v-card>
             </v-flex>
         </v-layout>
-        
-        <v-layout row>
+        <v-spacer class="margin-top"/>
+        <v-layout row >
             <v-flex xs12 sm12 md12 shrink>
                 <v-card class="elevation-12 padding-bottom">
 
                     <v-text-field
-                        v-model="$store.state.socket.message.data"
+                        v-model="incomingMessage"
                         label="Response"
                         :disabled="true"
                     ></v-text-field>
@@ -47,11 +57,20 @@
         },
 
         methods: {
-            sendMsg() {
+            sendMessage() {
                 this.$socket.send(this.outgoingMessage)
                 this.outgoingMessage = ''
             }
         },
+
+        computed: {
+            isConnected() {
+                return this.$store.state.socket.isConnected
+            },
+            incomingMessage() {
+                return this.$store.state.socket.message.data
+            }
+        }
     }
 </script>
 
@@ -61,5 +80,8 @@
 }
 .padding-bottom {
     padding: 1.6rem 2rem 1rem 
+}
+.margin-top {
+    margin-top: 2rem
 }
 </style>

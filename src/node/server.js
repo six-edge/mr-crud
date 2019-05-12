@@ -45,7 +45,7 @@ app.use(express.static('dist'))
 // Listen for incoming requests
 app.listen(port, () => {
     const info = debug ? `in ${env} mode!` : ''
-    console.info(chalk.magenta(`🚀  Server started at ${protocol}://${host}:${port} ${info}`))
+    console.info(`🚀  Server started at ${protocol}://${host}:${port} ${info}`)
 })
 
 // Create WebSocket Server
@@ -76,21 +76,21 @@ wss.on('connection', function connection(ws, req) {
         if (message.substr(0, 9) === 'broadcast') {
             const payload = message.substr(10)
             wss.broadcast(payload)
-            console.log(chalk.blue(`WS${client} broadcast: ${payload}`))
+            console.log(chalk.blue(`WSOCK${client} broadcast: ${payload}`))
         } else {
             ws.send(`echo: ${message}`)
-            console.log(chalk.blue(`WS${client} received: ${message}`))
+            console.log(chalk.blue(`WSOCK${client} received: ${message}`))
         }
     })
 
     // Redis Pattern Subscribe to worker-*
     redisSub.on("psubscribe", function (channel, count) {
-        console.log(chalk.red(`REDIS${client} redis subscribed to channel "${channel}" with ${count} listeners`))
+        console.log(chalk.red(`REDIS${client} subscribed to pattern "${channel}" with ${count} listeners`))
     })
     
     // Redis on message receive
     redisSub.on("pmessage", function (pattern, channel, message) {
-        console.log(chalk.red(`REDIS${client} redis received message on with pattern "${pattern}" on channel "${channel}" with message "${message}"`))
+        console.log(chalk.red(`REDIS${client} received message "${message}" on channel "${channel}"`))
         ws.send(message)
     })
     
@@ -101,7 +101,7 @@ wss.on('connection', function connection(ws, req) {
     ws.send(`Connected to ${ip.address()} on port ${req.connection.remotePort}`)
 
     // Confirmation
-    console.log(chalk.blue(`WS${client} connected`))
+    console.log(chalk.blue(`WSOCK${client} connected`))
 });
 
 

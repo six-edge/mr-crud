@@ -9,16 +9,16 @@ export default [
         icon: "import_export",
         route: "websocket"
     },
-    {
-        label: "Redis Store",
-        icon: "layers",
-        route: "redis"
-    },
-    {
-        label: "GitHub Store",
-        icon: "layers",
-        route: "github"
-    },
+    // {
+    //     label: "Redis Store",
+    //     icon: "layers",
+    //     route: "redis"
+    // },
+    // {
+    //     label: "GitHub Store",
+    //     icon: "layers",
+    //     route: "github"
+    // },
     {
         label: "Login with GitHub",
         icon: "lock",

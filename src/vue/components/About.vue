@@ -20,15 +20,16 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'
+  
   export default {
     props: {
       msg: String,
       emoji: String
     },
-    data: () => ({
-      debug: true,
-      user: JSON.parse(sessionStorage.getItem('user') || false)
-    })
+    computed: mapState([
+      'user'
+    ])
   }
 </script>
 

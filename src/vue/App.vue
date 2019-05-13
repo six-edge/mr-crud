@@ -10,6 +10,22 @@
             <v-list-tile-title>{{ item.label }}</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+        <v-list-tile @click="goto('/auth/github')" v-if="!loggedIn">
+          <v-list-tile-action>
+            <v-icon>lock</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Login with GitHub</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile @click="goto('/auth/logout')" v-if="loggedIn">
+          <v-list-tile-action>
+            <v-icon>lock_open</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Logout</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
       </v-list>
     </v-navigation-drawer>
     <v-toolbar app fixed clipped-left>
@@ -36,21 +52,24 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex'
 import menu from './menu'
 
 export default {
   name: 'App',
   data: () => ({
     drawer: true,
-    loggedIn: false,
-    menu: menu,
-    debug: process.env.NODE_ENV !== 'production' || false
+    menu: menu, 
   }),
+  computed: mapState([
+    'loggedIn',
+    'debug'
+  ]),
   methods: {
-    log(msg) {
-      // eslint-disable-next-line
-      console.log(msg)
-    },
+    ...mapActions([
+      'login',
+      'logout'
+    ]),
     goto(routeName, params) {
       if (routeName.charAt(0) === '/') {
         location.href=routeName
@@ -58,13 +77,13 @@ export default {
       this.$router.push({ name: routeName, params: params ? params : {}})
     }
   },
-  beforeCreate: () => {
-    // Parse JSON user data from the DOM and store it in the sessionStorage
+  created() {
+    // Parse JSON user data from the DOM and store it in the state
     const element = document.getElementById('node')
-    if (element && element.innerText !== '{}') {
-      sessionStorage.setItem('user', element.innerText || {})
+    if (element && element.innerText && element.innerText !== '{}') {
+      this.login(JSON.parse(element.innerText))
     } else {
-      sessionStorage.removeItem('user')
+      this.logout()
     }
   }
 }

@@ -1,5 +1,6 @@
 export default [
     {
+        secure: false,
         label: "Home",
         icon: "home",
         route: "home"
@@ -19,14 +20,4 @@ export default [
     //     icon: "layers",
     //     route: "github"
     // },
-    {
-        label: "Login with GitHub",
-        icon: "lock",
-        route: "/auth/github"
-    },
-    {
-        label: "Logout",
-        icon: "lock_open",
-        route: "/auth/logout"
-    },
 ]

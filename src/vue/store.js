@@ -3,8 +3,16 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+const TYPES = {
+  SET_LOGGED_IN: "SET_LOGGED_IN",
+  SET_USER: "SET_USER"
+}
+
 export default new Vuex.Store({
   state: {
+    user: false,
+    loggedIn: false,
+    debug: true,
     socket: {
       isConnected: false,
       message: '',
@@ -36,10 +44,24 @@ export default new Vuex.Store({
     SOCKET_RECONNECT_ERROR(state) {
       state.socket.reconnectError = true;
     },
+    [TYPES.SET_LOGGED_IN] (state, value) {
+      state.loggedIn = value
+    },
+    [TYPES.SET_USER] (state, user) {
+      state.user = user
+    }
   },
   actions: {
-    sendMessage: function(context, message) {
+    async sendMessage(context, message) {
       Vue.prototype.$socket.send(message)
+    },
+    async login ({ commit }, user) {
+      commit(TYPES.SET_LOGGED_IN, true)
+      commit(TYPES.SET_USER, user)
+    },
+    async logout ({ commit }) {
+      commit(TYPES.SET_LOGGED_IN, false)
+      commit(TYPES.SET_USER, false)
     }
   }
 })

@@ -1,7 +1,11 @@
 <template>
-  <div class="home"> 
-    <About msg="Hello we're the CRUD Family!" emoji="😎👧👱‍♀️" />
-  </div>
+  <v-layout align-center text-xs-center wrap>
+    <v-flex>
+      <div class="home"> 
+        <About msg="Hello we're the CRUD Family!" emoji="😎👧👱‍♀️" />
+      </div>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>

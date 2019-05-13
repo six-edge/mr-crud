@@ -13,18 +13,22 @@
 </template>
 
 <script>
+    import { mapState } from 'vuex'
     import axios from 'axios'
 
     export default {
         data: () => ({
             drawer: true,
-            user: JSON.parse(sessionStorage.getItem('user') || false),
             session: {}
         }),
 
         props: {
             source: String
         },
+
+        computed: mapState([
+            'user'
+        ]),
 
         methods: {
             getSession() {

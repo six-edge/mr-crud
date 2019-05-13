@@ -6,13 +6,17 @@ const strategy = require('passport-github').Strategy
 const passportStrategyOptions = {
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: `${process.env.PROTOCOL}://${process.env.HOST}:${process.env.SERVER_PORT}${process.env.GITHUB_CALLBACK_URL}`,
+    callbackURL: `${process.env.PROTOCOL}://${process.env.HOST}:${process.env.HTTP_PORT}${process.env.GITHUB_CALLBACK_URL}`
     //authorizationURL: "https://ENTERPRISE_INSTANCE_URL/login/oauth/authorize",
     //tokenURL: "https://ENTERPRISE_INSTANCE_URL/login/oauth/access_token",
     //userProfileURL: "https://ENTERPRISE_INSTANCE_URL/api/v3/user",
 }
 
-// Gets only relevant user data
+/**
+ * Get only relevant user data
+ * 
+ * @param {*} user 
+ */
 const getUserDto = user => {
     return {
         id: user.id,
@@ -29,7 +33,11 @@ const getUserDto = user => {
 const admins = process.env.ROLE_ADMIN.split(",")
 const users  = process.env.ROLE_USER.split(",")
 
-// Attaches roles to users 
+/**
+ * Attaches roles to users 
+ * 
+ * @param {*} user 
+ */
 const applyRoles = user => {
     user.roles = []
     if (users.includes(user.username))
@@ -41,13 +49,25 @@ const applyRoles = user => {
     return user
 }
 
-// On successful authentication
+/**
+ * On successful authentication
+ * 
+ * @param {*} accessToken 
+ * @param {*} refreshToken 
+ * @param {*} profile 
+ * @param {*} done 
+ */
 const onSuccess = (accessToken, refreshToken, profile, done) => {
-    
     // Callback expects an error and user object
     return done(null, applyRoles(profile))
 }
 
+/**
+ * Handles strategy callbacks and returns a new strategy
+ * 
+ * @param {Express} app 
+ * @param {PassportStatic} passport 
+ */
 module.exports = {
     strategy: (app, passport) => {
 
@@ -58,31 +78,20 @@ module.exports = {
         passport.deserializeUser(function(obj, done) {
             done(null, obj);
         });
-
+    
         // Path to attempt authentication using GitHub
         app.get('/auth/github', passport.authenticate('github'))
-
+    
         // Path to handle the authentication callback
         app.get(
             '/auth/github/callback', 
             passport.authenticate('github', { failureRedirect: '/' }), 
-            (req, res) => {
+            function(req, res) {
                 // Successful authentication. Redirect to home page.
                 res.redirect('/');
             }
         )
-
+    
         return new strategy(passportStrategyOptions, onSuccess)
     }
 }
-
-
-
-
-
-
-
-
-
-
-

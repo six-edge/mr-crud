@@ -1,10 +1,12 @@
 "use strict"
 
-module.exports = (RedisClient, RedisStore) => {
+const redis = require('redis')
 
+module.exports = RedisStore => {
+    
     // Redis store options
     const redisStoreOptions = {
-        client: RedisClient,
+        client: redis.createClient({ url: process.env.REDIS_URL }),
         logErrors: true,
     }
 

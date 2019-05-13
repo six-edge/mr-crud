@@ -6,7 +6,8 @@ import router from './router'
 import store from './store'
 import './plugins/vuetify'
 
-Vue.config.productionTip = false
+Vue.config.devtools = true
+Vue.config.productionTip = true
 
 Vue.use(Vuetify, {
   theme: {

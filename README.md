@@ -2,6 +2,16 @@
 
 Simple App that uses the GitHub API to CRUD files. Based on Node.js, Express, Vue.js and Vuetify
 
+### Start Server
+```
+npm start
+```
+
+### Start Server (watch files)
+```
+npm watch
+```
+
 ## Project setup
 ```
 yarn install
@@ -25,6 +35,12 @@ yarn run test
 ### Lints and fixes files
 ```
 yarn run lint
+```
+
+## Docker
+```
+docker build -t mr-crud-app .
+docker run -p 8080:8080 -d mr-crud-app
 ```
 
 ### Customize configuration

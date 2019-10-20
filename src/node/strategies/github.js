@@ -2,11 +2,14 @@
 
 const strategy = require('passport-github').Strategy
 
+// Add port when on localhost
+const host = process.env.HOST === 'localhost' ? `${process.env.HOST}:${process.env.PORT}` : process.env.HOST
+
 // Passport strategy options
 const passportStrategyOptions = {
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: `${process.env.PROTOCOL}://${process.env.HOST}:${process.env.PORT}${process.env.GITHUB_CALLBACK_URL}`
+    callbackURL: `${process.env.PROTOCOL}://${host}${process.env.GITHUB_CALLBACK_URL}`
     //authorizationURL: "https://ENTERPRISE_INSTANCE_URL/login/oauth/authorize",
     //tokenURL: "https://ENTERPRISE_INSTANCE_URL/login/oauth/access_token",
     //userProfileURL: "https://ENTERPRISE_INSTANCE_URL/api/v3/user",
@@ -30,8 +33,8 @@ const getUserDto = user => {
 }
 
 // Passport users are allocated roles in env vars
-const admins = process.env.ROLE_ADMIN.split(",")
-const users  = process.env.ROLE_USER.split(",")
+const admins = process.env.ROLE_ADMIN ? process.env.ROLE_ADMIN.split(",") : []
+const users  = process.env.ROLE_USER ? process.env.ROLE_USER.split(",") : []
 
 /**
  * Attaches roles to users 

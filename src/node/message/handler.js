@@ -6,11 +6,10 @@ const chalk = require('chalk');
  * Handle Incoming Message
  * 
  * @param {*} ws 
- * @param {*} redis 
  * @param {*} client 
  * @param {*} message 
  */
-const messageHandler = (ws, redis, client, message) => {
+const messageHandler = (ws, client, message) => {
 
     let messageObj = {}
     let isJson = true
@@ -28,22 +27,15 @@ const messageHandler = (ws, redis, client, message) => {
     }
 
     if (!messageObj.event) {
-        const payload = 'ERROR::Invalid Message! Must contain an event!'
-        redis.publish('worker-broadcast', payload)
-        console.log(chalk.yellow(payload))
+        console.log(chalk.yellow('ERROR::Invalid Message! Must contain an event!'))
         return false;
     }
 
     switch (messageObj.event) {
-        
-        case 'upload':
-            console.log(chalk.gray('TODO::Upload file to S3'))
-            console.log(chalk.gray('TODO::Then publish message to workers to download the file'))
-            break;
     
         case 'broadcast':
-            redis.publish('worker-broadcast', message)
-            console.log(chalk.red(`REDIS${client} broadcast: ${message}`))
+
+            console.log(chalk.red(`WSOCK${client} broadcast: ${message}`))
             break;
 
         case 'echo':
@@ -52,8 +44,8 @@ const messageHandler = (ws, redis, client, message) => {
             break;
 
         default:
-            redis.publish('event', message)
-            console.log(chalk.red(`REDIS${client} published: ${message} on event channel`))
+
+            console.log(chalk.red(`NOP`))
             break;
     }    
     return true;

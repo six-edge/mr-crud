@@ -16,16 +16,18 @@ const websocketHandler  = require('./websocket/handler')
 
 const protocol  = process.env.PROTOCOL = process.env.PROTOCOL || 'http'
 const host      = process.env.HOST = process.env.HOST || 'localhost'
-const port      = process.env.HTTP_PORT = process.env.HTTP_PORT || 5000
-const wsPort    = process.env.WS_PORT = process.env.WS_PORT || 5050
+const port      = process.env.PORT = process.env.PORT || 8000
 const dev       = process.env.NODE_ENV !== 'production'
 const env       = process.env.NODE_ENV
 
 // Passport using github strategy
 const passport = require('passport')
 
+// Session parser for http and ws server
+const sessionParser = session(sessionOptions)
+
 // Initialize session
-app.use(session(sessionOptions))
+app.use(sessionParser)
 app.use(passport.initialize())
 app.use(passport.session())
 
@@ -39,13 +41,18 @@ router.use(app)
 app.use(express.static('dist'))
 
 // Listen for incoming requests
-app.listen(port, () => {
-    console.info(`HTTP Server started at ${protocol}://${host}:${port}`)
+const server = app.listen(port, () => {
+    console.info(`Server started at ${protocol}://${host}:${port}`)
 })
 
 // Create WebSocket Server
-websocketHandler(new websocket.Server({ port: wsPort }, () => {
-    console.info(`WebSocket Server started at ws://${host}:${wsPort}`)
+websocketHandler(new websocket.Server({
+    server,
+    verifyClient: (info, done) => {
+        sessionParser(info.req, {}, () => {
+            done(info.req.session)
+        })
+    }
 }))
 
 // Output environment

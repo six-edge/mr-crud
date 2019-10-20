@@ -6,7 +6,7 @@ const strategy = require('passport-github').Strategy
 const passportStrategyOptions = {
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: `${process.env.PROTOCOL}://${process.env.HOST}:${process.env.HTTP_PORT}${process.env.GITHUB_CALLBACK_URL}`
+    callbackURL: `${process.env.PROTOCOL}://${process.env.HOST}:${process.env.PORT}${process.env.GITHUB_CALLBACK_URL}`
     //authorizationURL: "https://ENTERPRISE_INSTANCE_URL/login/oauth/authorize",
     //tokenURL: "https://ENTERPRISE_INSTANCE_URL/login/oauth/access_token",
     //userProfileURL: "https://ENTERPRISE_INSTANCE_URL/api/v3/user",

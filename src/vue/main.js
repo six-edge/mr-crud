@@ -21,7 +21,10 @@ Vue.use(Vuetify, {
   }
 })
 
-Vue.use(VueWebsocket, 'ws://localhost:5050', {
+const wsProtocol = window.location.href.substr(0, 5) === 'https' ? 'wss' : 'ws'
+const browserUrl = `${wsProtocol}://${window.location.hostname}:${window.location.port}`
+
+Vue.use(VueWebsocket, browserUrl, {
   store: store,
   reconnection: true,
   // connectManually: true,

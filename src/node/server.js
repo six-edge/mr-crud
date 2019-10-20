@@ -40,13 +40,13 @@ app.use(express.static('dist'))
 
 // Listen for incoming requests
 app.listen(port, () => {
-    console.info(`🚀  HTTP Server started at ${protocol}://${host}:${port}`)
+    console.info(`HTTP Server started at ${protocol}://${host}:${port}`)
 })
 
 // Create WebSocket Server
 websocketHandler(new websocket.Server({ port: wsPort }, () => {
-    console.info(`🚀  WebSocket Server started at ws://${host}:${wsPort}`)
+    console.info(`WebSocket Server started at ws://${host}:${wsPort}`)
 }))
 
 // Output environment
-console.info(dev ? chalk.magenta(`👉  Node Environment: ${env}`) : chalk.green(`👉  Production Mode`))
+console.info(dev ? chalk.magenta(`Node Environment: ${env}`) : chalk.green(`Production Mode`))

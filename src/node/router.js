@@ -28,9 +28,7 @@ module.exports = {
         })
 
         // Mr. Server
-        app.get('/test', (req, res) => {
-            res.send(`<pre style="font-size: 5rem">Hello Mr. Server 🤪</pre>`)
-        })
+        app.get('/test', (req, res) => res.send(`<pre style="font-size: 5rem">Hello Mr. Server 🤪</pre>`))
 
         // User Profile
         app.get('/profile', (req, res) => {

@@ -41,7 +41,12 @@ yarn run lint
 ```
 docker build -t mr-crud-app .
 docker run -p 8080:8080 -d mr-crud-app
+# or
+docker-compose up
 ```
+
+## Demo
+- http://mr-crud.herokuapp.com/
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).

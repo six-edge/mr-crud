@@ -1,4 +1,4 @@
-FROM arm32v7/node:10
+FROM node:latest
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -15,5 +15,5 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-EXPOSE 8080
+EXPOSE 8000
 CMD [ "node", "src/node/server.js" ]

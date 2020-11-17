@@ -1,24 +1,21 @@
 {
   "name": "mr-crud",
   "version": "0.1.0",
-  "homepage": "https://mr-crud.herokuapp.com/",
-  "description": "Simple App that uses the GitHub API to CRUD files. Based on Node.js, Express, Vue.js and Vuetify",
   "private": true,
+  "description": "Simple App that uses the GitHub API to CRUD files. Based on Node.js, Express, Vue.js and Vuetify",
   "scripts": {
-    "dev": "vue-cli-service build --mode dev --watch",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "dev": "vue-cli-service build --mode dev --watch",
     "start": "node src/node/server.js",
     "watch": "nodemon src/node/server.js"
-  },
-  "engines": {
-    "node": "10.x"
   },
   "dependencies": {
     "axios": "^0.19.0",
     "chalk": "^2.4.2",
     "connect-redis": "^4.0.3",
+    "core-js": "^3.6.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
@@ -36,9 +33,9 @@
     "ws": "^7.2.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.12.1",
+    "@vue/cli-plugin-babel": "~4.5.8",
     "@vue/cli-plugin-eslint": "^3.12.1",
-    "@vue/cli-service": "^3.12.1",
+    "@vue/cli-service": "~4.5.8",
     "babel-eslint": "^10.0.3",
     "eslint": "^6.5.1",
     "eslint-plugin-vue": "^5.2.3",
@@ -73,5 +70,9 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "engines": {
+    "node": "10.x"
+  },
+  "homepage": "https://mr-crud.herokuapp.com/"
 }

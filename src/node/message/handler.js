@@ -2,6 +2,10 @@
 
 const chalk = require('chalk');
 
+// const { subscribe } = require('./messages.js');
+
+const subscriptions = new Map();
+
 /**
  * Handle Incoming Message
  * 
@@ -11,41 +15,64 @@ const chalk = require('chalk');
  */
 const messageHandler = (ws, client, message) => {
 
-    let messageObj = {}
+    console.log(chalk.blue(`WSOCK${client} received: ${message}`))
+    
+    const idErrMsg = 'ERROR::Invalid Message! Must contain an id!'
+    const eventErrMsg = 'ERROR::Message must have an `event` property!'
+
+    let msg = {}
     let isJson = true
 
     try {
-        messageObj = JSON.parse(message);
+        msg = JSON.parse(message);
     } catch(e) {
         isJson = false
     }
 
     if (!isJson) {
-        ws.send(`echo: ${message}`)
-        console.log(chalk.blue(`WSOCK${client} received: ${message}`))
+        ws.send(`I dont understand ${message} :(`)
         return true;
     }
 
-    if (!messageObj.event) {
-        console.log(chalk.yellow('ERROR::Invalid Message! Must contain an event!'))
+    if (!msg.event) {
+        console.log(chalk.yellow(eventErrMsg))
+        ws.send(eventErrMsg)
         return false;
     }
 
-    switch (messageObj.event) {
-    
-        case 'broadcast':
+    switch (msg.event) {
 
-            console.log(chalk.red(`WSOCK${client} broadcast: ${message}`))
+        case 'subscribe':
+            if (!msg.id) {
+                console.log(chalk.yellow(idErrMsg))
+                ws.send(idErrMsg)
+                break;
+            }
+            const sendRandomNumber = () => ws.send(JSON.stringify({ id: msg.id, value: Math.random() }))
+            const interval = setInterval(sendRandomNumber, 1000)
+            subscriptions.set(msg.id, interval);
             break;
 
-        case 'echo':
-            ws.send(`echo: ${message}`)
-            console.log(chalk.blue(`WSOCK${client} received: ${message}`))
+        case 'unsubscribe':
+            if (!msg.id) {
+                console.log(chalk.yellow(idErrMsg))
+                ws.send(idErrMsg)
+                break;
+            }
+            if (!subscriptions.has(msg.id)) {
+                const noSubErrMsg = `ERROR::No subscription found with id ${msg.id}`
+                console.log(chalk.yellow(noSubErrMsg))
+                ws.send(noSubErrMsg)
+                break;
+            }
+            clearTimeout(subscriptions.get(msg.id))
+            subscriptions.delete(msg.id)
             break;
 
         default:
-
-            console.log(chalk.red(`NOP`))
+            const unknownEventErrMsg = `Unknown event ${msg.event}`
+            console.log(chalk.red(unknownEventErrMsg))
+            ws.send(unknownEventErrMsg)
             break;
     }    
     return true;

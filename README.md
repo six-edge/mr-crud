@@ -50,3 +50,10 @@ docker-compose up
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+## Test Messages
+
+{ "event": "subscribe", "id": 1 }
+{ "event": "subscribe", "id": 2 }
+{ "event": "unsubscribe", "id": 1 }
+{ "event": "unsubscribe", "id": 2 }

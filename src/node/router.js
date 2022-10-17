@@ -46,7 +46,7 @@ module.exports = {
         })
 
         // Session Test Page
-        app.get('/session', (req, res, next) => {
+        app.get('/session', (req, res) => {
             if (req.session.views) {
                 req.session.views++
             } else {

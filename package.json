@@ -72,7 +72,7 @@
     "not ie <= 8"
   ],
   "engines": {
-    "node": "14.x"
+    "node": "16.x"
   },
   "homepage": "https://mr-crud.herokuapp.com/"
 }
